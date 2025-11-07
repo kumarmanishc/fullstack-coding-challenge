@@ -4,8 +4,8 @@ import {
   Route,
   NavLink,
 } from "react-router-dom";
-import { Ambulance, UserRound, Home } from "lucide-react";
-import { DoctorPage, AmbulancePage } from "@/pages";
+import { Ambulance, UserRound, Building2, Home } from "lucide-react";
+import { DoctorPage, AmbulancePage, LocationPage } from "@/pages";
 
 function App() {
   // Navigation component
@@ -48,6 +48,19 @@ function App() {
               <UserRound className="h-4 w-4 mr-2" />
               Doctors
             </NavLink>
+            <NavLink
+              to="/locations"
+              className={({ isActive }) =>
+                `flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  isActive
+                    ? "bg-green-100 text-green-700"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                }`
+              }
+            >
+              <Building2 className="h-4 w-4 mr-2" />
+              Locations
+            </NavLink>
           </div>
         </div>
       </div>
@@ -62,6 +75,7 @@ function App() {
           <Routes>
             <Route path="/" element={<AmbulancePage />} />
             <Route path="/doctors" element={<DoctorPage />} />
+            <Route path="/locations" element={<LocationPage />} />
           </Routes>
         </main>
       </div>

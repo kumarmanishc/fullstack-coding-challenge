@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 import ambulanceRoutes from './routes/ambulances';
 import doctorRoutes from './routes/doctors';
+import locationRoutes from './routes/locations';
 
 // Load environment variables
 dotenv.config();
@@ -67,6 +68,7 @@ app.get('/health', (req, res) => {
 const apiPrefix = process.env.API_PREFIX || '/api/v1';
 app.use(`${apiPrefix}/ambulances`, ambulanceRoutes);
 app.use(`${apiPrefix}/doctors`, doctorRoutes);
+app.use(`${apiPrefix}/locations`, locationRoutes);
 
 // Root endpoint
 app.get('/', (req, res) => {
@@ -78,6 +80,7 @@ app.get('/', (req, res) => {
       health: '/health',
       ambulances: `${apiPrefix}/ambulances`,
       doctors: `${apiPrefix}/doctors`,
+      locations: `${apiPrefix}/locations`,
     },
   });
 });
@@ -95,6 +98,7 @@ if (process.env.NODE_ENV !== 'test') {
     console.log(`API endpoints available at: http://localhost:${PORT}${apiPrefix}`);
     console.log(`Ambulances: http://localhost:${PORT}${apiPrefix}/ambulances`);
     console.log(`Doctors: http://localhost:${PORT}${apiPrefix}/doctors`);
+    console.log(`Locations: http://localhost:${PORT}${apiPrefix}/locations`);
     console.log(`Health check: http://localhost:${PORT}/health`);
   });
 }

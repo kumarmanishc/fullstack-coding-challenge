@@ -1,6 +1,6 @@
 import { useState } from "react";
-import DoctorList from "@/components/DoctorList";
-import DoctorForm from "@/components/DoctorForm";
+import DoctorList from "@/pages/doctors/DoctorList";
+import DoctorForm from "@/pages/doctors/DoctorForm";
 import type { Ambulance as Doctor } from "@/services/api";
 
 export const DoctorPage = () => {

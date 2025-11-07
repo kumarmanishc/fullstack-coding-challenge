@@ -1,38 +1,10 @@
 import { ApiURLs } from '@/config';
+import type { Ambulance, Doctor, Location, PaginatedResponse } from '@/types';
 import axios from 'axios';
 
 const api = axios.create({
   baseURL: ApiURLs.BASE,
 });
-
-export interface Ambulance {
-  id: string;
-  title: string;
-  description: string;
-  location: string;
-  image?: string;
-}
-
-export interface Doctor {
-  id: string;
-  title: string;
-  description: string;
-  location: string;
-  image?: string;
-}
-
-export interface PaginatedResponse<T> {
-  data: T[];
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
-}
-
-export interface ApiError {
-  message: string;
-  status: number;
-}
 
 
 /**
@@ -47,16 +19,15 @@ const ApiService = <T>(resourceURL: string) => ({
   getAll: async (page = 1, limit = 10): Promise<PaginatedResponse<T>> => {
     try {
       const response = await api.get(`${resourceURL}?_page=${page}&_limit=${limit}`);
-
-      // Get total count from separate call if header not available
-      let total = parseInt(response.headers['x-total-count'] || '0');
-      if (total === 0) {
-        const allResponse = await api.get(resourceURL);
-        total = allResponse.data.length;
+      const { success, data } = response.data;
+      if (!success) {
+        throw new Error('API responded with an error');
       }
+      // Get total count from separate call if header not available
+      const total = data.total;
 
       return {
-        data: response.data,
+        data: data.data,
         total,
         page,
         limit,
@@ -119,3 +90,4 @@ const ApiService = <T>(resourceURL: string) => ({
 
 export const ambulanceApi = ApiService<Ambulance>(ApiURLs.AMBULANCES);
 export const doctorApi = ApiService<Doctor>(ApiURLs.DOCTORS);
+export const locationApi = ApiService<Location>(ApiURLs.LOCATIONS);

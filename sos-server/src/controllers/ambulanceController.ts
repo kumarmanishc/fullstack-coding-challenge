@@ -10,8 +10,8 @@ export class AmbulanceController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const { page, limit, search } = req.query;
-      const result = await ambulanceService.getAll({ page, limit, search });
+      const { _page, _limit, search } = req.query;
+      const result = await ambulanceService.getAll({ _page, _limit, search });
       res.json({
         success: true,
         data: result,

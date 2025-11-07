@@ -4,13 +4,13 @@ import { Ambulance, CreateAmbulanceDto, UpdateAmbulanceDto, PaginatedResponse } 
 
 export class AmbulanceService {
   async getAll(params: {
-    page?: string;
-    limit?: string;
+    _page?: string;
+    _limit?: string;
     search?: string;
   }): Promise<PaginatedResponse<Ambulance>> {
-    const { page, limit } = validatePaginationParams(params.page, params.limit);
+    const { page, limit } = validatePaginationParams(params._page, params._limit);
     const ambulances = database.getAllAmbulances();
-    
+
     return paginate(ambulances, {
       page,
       limit,
@@ -28,7 +28,7 @@ export class AmbulanceService {
 
   async create(data: CreateAmbulanceDto): Promise<Ambulance> {
     // Validate required fields
-    if (!data.title || !data.description || !data.location) {
+    if (!data.title || !data.description || !data.locationId) {
       throw new Error('Title, description, and location are required');
     }
 

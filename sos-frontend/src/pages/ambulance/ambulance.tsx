@@ -1,7 +1,7 @@
 import { useState } from "react";
-import AmbulanceList from "@/components/AmbulanceList";
+import AmbulanceList from "@/pages/ambulance/AmbulanceList";
 
-import AmbulanceForm from "@/components/AmbulanceForm";
+import AmbulanceForm from "@/pages/ambulance/AmbulanceForm";
 import type { Ambulance as AmbulanceType } from "@/services/api";
 
 export const AmbulancePage = () => {

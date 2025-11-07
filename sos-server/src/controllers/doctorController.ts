@@ -10,8 +10,8 @@ export class DoctorController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const { page, limit, search } = req.query;
-      const result = await doctorService.getAll({ page, limit, search });
+      const { _page, _limit, search } = req.query;
+      const result = await doctorService.getAll({ _page, _limit, search });
       res.json({
         success: true,
         data: result,

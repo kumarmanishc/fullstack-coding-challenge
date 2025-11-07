@@ -1,8 +1,11 @@
 import React from "react";
 import { MapPin, UserRound } from "lucide-react";
 import { doctorApi } from "@/services/api";
-import type { Doctor } from "@/services/api";
-import TableMaster, { type TableConfig, type TableColumn } from "./TableMaster";
+import TableMaster, {
+  type TableConfig,
+  type TableColumn,
+} from "../../components/TableMaster";
+import type { Doctor } from "@/types";
 
 interface DoctorListProps {
   onAdd?: () => void;
@@ -18,7 +21,7 @@ export default function DoctorList({
   const columns: TableColumn[] = [
     {
       key: "image",
-      label: "Image",
+      label: "Profile",
       render: (value, item) =>
         value ? (
           <img
@@ -34,12 +37,12 @@ export default function DoctorList({
     },
     {
       key: "title",
-      label: "Title",
+      label: "Doctor Name",
       className: "font-medium",
     },
     {
       key: "description",
-      label: "Description",
+      label: "Specialization",
       className: "max-w-xs truncate",
     },
     {

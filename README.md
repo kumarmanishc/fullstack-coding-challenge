@@ -81,7 +81,7 @@ fullstack-coding-challenge/
 │   │   ├── hooks/          # Custom React hooks
 │   │   ├── services/       # API service functions
 │   │   ├── types/          # TypeScript type definitions
-│   │   └── utils/          # Utility functions
+│   │   └── lib/            # Utility functions
 │   ├── public/
 │   └── package.json
 ├── sos-server/             # Node.js TypeScript backend
@@ -90,6 +90,7 @@ fullstack-coding-challenge/
 │   │   ├── models/         # Data models
 │   │   ├── routes/         # API routes
 │   │   ├── middleware/     # Express middleware
+|   |   ├── types/          # TypeScript type definitions
 │   │   └── utils/          # Utility functions
 │   ├── tests/
 │   └── package.json
@@ -125,3 +126,18 @@ npm install
 npm run dev
 ```
 The backend will be available at `http://localhost:3000`
+
+## Areas of Improvement
+### 2. Setup Frontend
+- Creating a shared component for forms to reduce redundancy, like TableMaster component common api error and loaded handling.
+- Implement user authentication and authorization.
+- Add search and filter functionality for ambulances and doctors.
+- Logging and monitoring for better error tracking.
+- Using state for management libraries like Redux or Zustand for larger applications for locations
+
+### 2. Setup Backend
+- Database is not persistent it's via state so every time server starts it will reset to default value.
+- Implement user authentication and authorization.
+- Add search and filter functionality for ambulances and doctors.
+- Update APIs are not working properly for PUT method.
+  

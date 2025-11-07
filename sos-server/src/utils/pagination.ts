@@ -11,7 +11,7 @@ export function paginate<T>(
   options: PaginationOptions
 ): PaginatedResponse<T> {
   const { page, limit, search } = options;
-  
+
   // Apply search filter if provided
   let filteredData = data;
   if (search) {

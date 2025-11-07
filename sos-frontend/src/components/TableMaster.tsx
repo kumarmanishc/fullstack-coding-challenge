@@ -57,9 +57,11 @@ interface TableMasterProps<T = any> {
 export default function TableMaster<T extends { id: string }>({
   config,
 }: TableMasterProps<T>) {
-  const [data, setData] = useState<{ data: T[]; totalPages: number } | null>(
-    null
-  );
+  const [data, setData] = useState<{
+    data: T[];
+    totalPages: number;
+    total: number;
+  } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -198,7 +200,7 @@ export default function TableMaster<T extends { id: string }>({
                 {config.title}
               </CardTitle>
               <p className="text-sm text-muted-foreground">
-                Total: {totalCount} {config.title.toLowerCase()}
+                Total: {data?.total} {config.title.toLowerCase()}
               </p>
             </div>
             {config.actions?.onAdd && (
@@ -246,7 +248,7 @@ export default function TableMaster<T extends { id: string }>({
               {config.title}
             </CardTitle>
             <p className="text-sm text-muted-foreground">
-              Total: {totalCount} {config.title.toLowerCase()}
+              Total: {data.total} {config.title.toLowerCase()}
             </p>
           </div>
           {config.actions?.onAdd && (
@@ -353,8 +355,8 @@ export default function TableMaster<T extends { id: string }>({
         {data && data.totalPages > 1 && (
           <div className="flex items-center justify-between mt-6">
             <div className="text-sm text-muted-foreground">
-              Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
-              {Math.min(currentPage * itemsPerPage, totalCount)} of {totalCount}{" "}
+              Showing {(data.page - 1) * itemsPerPage + 1} to
+              {Math.min(currentPage * itemsPerPage, data.total)} of {data.total}{" "}
               results
             </div>
             <div className="flex items-center gap-2">

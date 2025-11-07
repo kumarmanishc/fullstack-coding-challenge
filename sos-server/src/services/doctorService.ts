@@ -4,13 +4,13 @@ import { Doctor, CreateDoctorDto, UpdateDoctorDto, PaginatedResponse } from '../
 
 export class DoctorService {
   async getAll(params: {
-    page?: string;
-    limit?: string;
+    _page?: string;
+    _limit?: string;
     search?: string;
   }): Promise<PaginatedResponse<Doctor>> {
-    const { page, limit } = validatePaginationParams(params.page, params.limit);
+    const { page, limit } = validatePaginationParams(params._page, params._limit);
     const doctors = database.getAllDoctors();
-    
+
     return paginate(doctors, {
       page,
       limit,
@@ -28,7 +28,7 @@ export class DoctorService {
 
   async create(data: CreateDoctorDto): Promise<Doctor> {
     // Validate required fields
-    if (!data.title || !data.description || !data.location) {
+    if (!data.title || !data.description || !data.locationId) {
       throw new Error('Title, description, and location are required');
     }
 

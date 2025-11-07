@@ -30,26 +30,26 @@ export const validateCreateAmbulance = [
     .withMessage('Title is required')
     .isLength({ min: 1, max: 100 })
     .withMessage('Title must be between 1 and 100 characters'),
-  
+
   body('description')
     .trim()
     .notEmpty()
     .withMessage('Description is required')
     .isLength({ min: 1, max: 500 })
     .withMessage('Description must be between 1 and 500 characters'),
-  
-  body('location')
+
+  body('locationId')
     .trim()
     .notEmpty()
     .withMessage('Location is required')
     .isLength({ min: 1, max: 200 })
     .withMessage('Location must be between 1 and 200 characters'),
-  
+
   body('image')
     .optional()
     .isURL()
     .withMessage('Image must be a valid URL'),
-  
+
   handleValidationErrors,
 ];
 
@@ -59,24 +59,24 @@ export const validateUpdateAmbulance = [
     .trim()
     .isLength({ min: 1, max: 100 })
     .withMessage('Title must be between 1 and 100 characters'),
-  
+
   body('description')
     .optional()
     .trim()
     .isLength({ min: 1, max: 500 })
     .withMessage('Description must be between 1 and 500 characters'),
-  
+
   body('location')
     .optional()
     .trim()
     .isLength({ min: 1, max: 200 })
     .withMessage('Location must be between 1 and 200 characters'),
-  
+
   body('image')
     .optional()
     .isURL()
     .withMessage('Image must be a valid URL'),
-  
+
   handleValidationErrors,
 ];
 
@@ -88,26 +88,26 @@ export const validateCreateDoctor = [
     .withMessage('Title is required')
     .isLength({ min: 1, max: 100 })
     .withMessage('Title must be between 1 and 100 characters'),
-  
+
   body('description')
     .trim()
     .notEmpty()
     .withMessage('Description is required')
     .isLength({ min: 1, max: 500 })
     .withMessage('Description must be between 1 and 500 characters'),
-  
-  body('location')
+
+  body('locationId')
     .trim()
     .notEmpty()
     .withMessage('Location is required')
     .isLength({ min: 1, max: 200 })
     .withMessage('Location must be between 1 and 200 characters'),
-  
+
   body('image')
     .optional()
     .isURL()
     .withMessage('Image must be a valid URL'),
-  
+
   handleValidationErrors,
 ];
 
@@ -117,24 +117,82 @@ export const validateUpdateDoctor = [
     .trim()
     .isLength({ min: 1, max: 100 })
     .withMessage('Title must be between 1 and 100 characters'),
-  
+
   body('description')
     .optional()
     .trim()
     .isLength({ min: 1, max: 500 })
     .withMessage('Description must be between 1 and 500 characters'),
-  
+
+  body('locationId')
+    .optional()
+    .trim()
+    .isLength({ min: 1, max: 200 })
+    .withMessage('Location must be between 1 and 200 characters'),
+
+  body('image')
+    .optional()
+    .isURL()
+    .withMessage('Image must be a valid URL'),
+
+  handleValidationErrors,
+];
+
+// Location validation rules
+export const validateCreateLocation = [
+  body('title')
+    .trim()
+    .notEmpty()
+    .withMessage('Title is required')
+    .isLength({ min: 1, max: 100 })
+    .withMessage('Title must be between 1 and 100 characters'),
+
+  body('description')
+    .trim()
+    .notEmpty()
+    .withMessage('Description is required')
+    .isLength({ min: 1, max: 500 })
+    .withMessage('Description must be between 1 and 500 characters'),
+
+  body('location')
+    .trim()
+    .notEmpty()
+    .withMessage('Location is required')
+    .isLength({ min: 1, max: 200 })
+    .withMessage('Location must be between 1 and 200 characters'),
+
+  body('image')
+    .optional()
+    .isURL()
+    .withMessage('Image must be a valid URL'),
+
+  handleValidationErrors,
+];
+
+export const validateUpdateLocation = [
+  body('title')
+    .optional()
+    .trim()
+    .isLength({ min: 1, max: 100 })
+    .withMessage('Title must be between 1 and 100 characters'),
+
+  body('description')
+    .optional()
+    .trim()
+    .isLength({ min: 1, max: 500 })
+    .withMessage('Description must be between 1 and 500 characters'),
+
   body('location')
     .optional()
     .trim()
     .isLength({ min: 1, max: 200 })
     .withMessage('Location must be between 1 and 200 characters'),
-  
+
   body('image')
     .optional()
     .isURL()
     .withMessage('Image must be a valid URL'),
-  
+
   handleValidationErrors,
 ];
 
@@ -146,7 +204,7 @@ export const validateId = [
     .withMessage('ID is required')
     .isLength({ min: 1 })
     .withMessage('ID must not be empty'),
-  
+
   handleValidationErrors,
 ];
 
@@ -156,17 +214,17 @@ export const validatePagination = [
     .optional()
     .isInt({ min: 1 })
     .withMessage('Page must be a positive integer'),
-  
+
   query('limit')
     .optional()
     .isInt({ min: 1, max: 100 })
     .withMessage('Limit must be between 1 and 100'),
-  
+
   query('search')
     .optional()
     .trim()
     .isLength({ max: 100 })
     .withMessage('Search term must not exceed 100 characters'),
-  
+
   handleValidationErrors,
 ];

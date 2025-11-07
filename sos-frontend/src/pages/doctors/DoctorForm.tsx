@@ -1,29 +1,48 @@
-import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { 
-  Form, 
-  FormControl, 
-  FormField, 
-  FormItem, 
-  FormLabel, 
-  FormMessage 
-} from '@/components/ui/form';
-import { Save, X, UserRound } from 'lucide-react';
-import { doctorApi } from '@/services/api';
-import type { Doctor } from '@/services/api';
-
+import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Save, X, UserRound, Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { doctorApi, locationApi } from "@/services/api";
+import type { Doctor, Location } from "@/types";
+import { LocationSelect } from "@/components/ui/LocationSelect";
 const doctorSchema = z.object({
-  title: z.string().min(1, 'Title is required').max(100, 'Title must be less than 100 characters'),
-  description: z.string().min(1, 'Description is required').max(500, 'Description must be less than 500 characters'),
-  location: z.string().min(1, 'Location is required').max(200, 'Location must be less than 200 characters'),
-  image: z.string().url('Must be a valid URL').optional().or(z.literal('')),
+  title: z
+    .string()
+    .min(1, "Title is required")
+    .max(100, "Title must be less than 100 characters"),
+  description: z
+    .string()
+    .min(1, "Description is required")
+    .max(500, "Description must be less than 500 characters"),
+  locationId: z.string().min(1, "Location is required"),
+  image: z.string().url("Must be a valid URL").optional().or(z.literal("")),
 });
 
 type DoctorFormData = z.infer<typeof doctorSchema>;
@@ -34,28 +53,52 @@ interface DoctorFormProps {
   onCancel?: () => void;
 }
 
-export default function DoctorForm({ doctor, onSave, onCancel }: DoctorFormProps) {
+export default function DoctorForm({
+  doctor,
+  onSave,
+  onCancel,
+}: DoctorFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [locations, setLocations] = useState<Location[]>([]);
+  const [locationsLoading, setLocationsLoading] = useState(true);
+  const [open, setOpen] = useState(false);
   const isEdit = !!doctor;
 
   const form = useForm<DoctorFormData>({
     resolver: zodResolver(doctorSchema),
     defaultValues: {
-      title: doctor?.title || '',
-      description: doctor?.description || '',
-      location: doctor?.location || '',
-      image: doctor?.image || '',
+      title: doctor?.title || "",
+      description: doctor?.description || "",
+      locationId: doctor?.locationId?.toString() || "",
+      image: doctor?.image || "",
     },
   });
+
+  // Fetch locations on component mount
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        setLocationsLoading(true);
+        const locationResp = await locationApi.getAll();
+        setLocations(locationResp);
+      } catch (err) {
+        setError("Failed to load locations");
+      } finally {
+        setLocationsLoading(false);
+      }
+    };
+
+    fetchLocations();
+  }, []);
 
   useEffect(() => {
     if (doctor) {
       form.reset({
         title: doctor.title,
         description: doctor.description,
-        location: doctor.location,
-        image: doctor.image || '',
+        locationId: doctor.locationId?.toString() || "",
+        image: doctor.image || "",
       });
     }
   }, [doctor, form]);
@@ -67,6 +110,7 @@ export default function DoctorForm({ doctor, onSave, onCancel }: DoctorFormProps
 
       const doctorData = {
         ...data,
+        locationId: parseInt(data.locationId),
         image: data.image || undefined,
       };
 
@@ -82,7 +126,7 @@ export default function DoctorForm({ doctor, onSave, onCancel }: DoctorFormProps
         onSave(savedDoctor);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save doctor');
+      setError(err instanceof Error ? err.message : "Failed to save doctor");
     } finally {
       setLoading(false);
     }
@@ -93,7 +137,7 @@ export default function DoctorForm({ doctor, onSave, onCancel }: DoctorFormProps
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <UserRound className="h-6 w-6" />
-          {isEdit ? 'Edit Doctor' : 'Add New Doctor'}
+          {isEdit ? "Edit Doctor" : "Add New Doctor"}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -110,11 +154,11 @@ export default function DoctorForm({ doctor, onSave, onCancel }: DoctorFormProps
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Title *</FormLabel>
+                  <FormLabel>Doctor Name *</FormLabel>
                   <FormControl>
-                    <Input 
-                      placeholder="e.g., Dr. John Smith - Cardiologist" 
-                      {...field} 
+                    <Input
+                      placeholder="e.g., Dr. John Smith - Cardiologist"
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -127,7 +171,7 @@ export default function DoctorForm({ doctor, onSave, onCancel }: DoctorFormProps
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description *</FormLabel>
+                  <FormLabel>Specialization *</FormLabel>
                   <FormControl>
                     <textarea
                       className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
@@ -142,14 +186,16 @@ export default function DoctorForm({ doctor, onSave, onCancel }: DoctorFormProps
 
             <FormField
               control={form.control}
-              name="location"
+              name="locationId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Location *</FormLabel>
                   <FormControl>
-                    <Input 
-                      placeholder="e.g., 123 Medical Center, City, State 12345" 
-                      {...field} 
+                    <LocationSelect
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      placeholder="Select location..."
+                      disabled={loading}
                     />
                   </FormControl>
                   <FormMessage />
@@ -164,10 +210,10 @@ export default function DoctorForm({ doctor, onSave, onCancel }: DoctorFormProps
                 <FormItem>
                   <FormLabel>Image URL (Optional)</FormLabel>
                   <FormControl>
-                    <Input 
-                      placeholder="https://example.com/doctor-photo.jpg" 
+                    <Input
+                      placeholder="https://example.com/doctor-photo.jpg"
                       type="url"
-                      {...field} 
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -176,16 +222,16 @@ export default function DoctorForm({ doctor, onSave, onCancel }: DoctorFormProps
             />
 
             {/* Image Preview */}
-            {form.watch('image') && (
+            {form.watch("image") && (
               <div className="space-y-2">
                 <Label>Image Preview</Label>
                 <div className="border rounded-lg p-4 bg-muted/50">
-                  <img 
-                    src={form.watch('image')} 
-                    alt="Preview" 
+                  <img
+                    src={form.watch("image")}
+                    alt="Preview"
                     className="max-h-32 rounded-full object-cover"
                     onError={(e) => {
-                      e.currentTarget.style.display = 'none';
+                      e.currentTarget.style.display = "none";
                     }}
                   />
                 </div>
@@ -193,22 +239,26 @@ export default function DoctorForm({ doctor, onSave, onCancel }: DoctorFormProps
             )}
 
             <div className="flex flex-col-reverse sm:flex-row gap-3 pt-4">
-              <Button 
-                type="button" 
-                variant="outline" 
+              <Button
+                type="button"
+                variant="outline"
                 onClick={onCancel}
                 className="w-full sm:w-auto"
               >
                 <X className="h-4 w-4 mr-2" />
                 Cancel
               </Button>
-              <Button 
-                type="submit" 
-                disabled={loading}
+              <Button
+                type="submit"
+                disabled={loading || locationsLoading}
                 className="w-full sm:w-auto"
               >
                 <Save className="h-4 w-4 mr-2" />
-                {loading ? 'Saving...' : (isEdit ? 'Update Doctor' : 'Add Doctor')}
+                {loading
+                  ? "Saving..."
+                  : isEdit
+                  ? "Update Doctor"
+                  : "Add Doctor"}
               </Button>
             </div>
           </form>

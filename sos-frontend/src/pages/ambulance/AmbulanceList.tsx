@@ -1,8 +1,11 @@
 import React from "react";
 import { MapPin, Ambulance as AmbulanceIcon } from "lucide-react";
 import { ambulanceApi } from "@/services/api";
-import type { Ambulance } from "@/services/api";
-import TableMaster, { type TableConfig, type TableColumn } from "./TableMaster";
+import TableMaster, {
+  type TableConfig,
+  type TableColumn,
+} from "../../components/TableMaster";
+import type { Ambulance } from "@/types";
 
 interface AmbulanceListProps {
   onAdd?: () => void;
