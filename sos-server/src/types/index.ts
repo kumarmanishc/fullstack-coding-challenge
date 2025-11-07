@@ -22,6 +22,8 @@ export interface Location {
   id: string;
   location: string; // This remains as the address/location string
   image?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface CreateAmbulanceDto {

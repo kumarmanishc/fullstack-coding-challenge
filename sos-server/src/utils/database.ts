@@ -422,8 +422,6 @@ class Database {
     const existingLocation = this.locations[index]!;
     this.locations[index] = {
       id: existingLocation.id,
-      title: data.title ?? existingLocation.title,
-      description: data.description ?? existingLocation.description,
       location: data.location ?? existingLocation.location,
       image: data.image ?? existingLocation.image,
       createdAt: existingLocation.createdAt,
