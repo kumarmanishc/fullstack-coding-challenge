@@ -20,12 +20,8 @@ export interface Doctor {
 
 export interface Location {
   id: string;
-  title: string;
-  description: string;
   location: string; // This remains as the address/location string
   image?: string;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export interface CreateAmbulanceDto {

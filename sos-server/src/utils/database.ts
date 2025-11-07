@@ -17,48 +17,28 @@ class Database {
     this.locations = [
       {
         id: '1',
-        title: 'City General Hospital',
-        description: 'Main public hospital serving the downtown area with 24/7 emergency services.',
         location: '123 Main Street, Downtown, City 12345',
-        image: 'https://images.unsplash.com/photo-1586773860418-d37222d8fce3?w=400&h=400&fit=crop',
-        createdAt: new Date('2024-01-01'),
-        updatedAt: new Date('2024-01-01'),
+        image: 'https://images.unsplash.com/photo-1586773860418-d37222d8fce3?w=400&h=400&fit=crop'
       },
       {
         id: '2',
-        title: 'Metro Medical Center',
-        description: 'Specialized medical center with advanced surgical facilities and ICU.',
         location: '456 Health Avenue, Metro District, City 12346',
         image: 'https://images.unsplash.com/photo-1551190822-a9333d879b1f?w=400&h=400&fit=crop',
-        createdAt: new Date('2024-01-02'),
-        updatedAt: new Date('2024-01-02'),
       },
       {
         id: '3',
-        title: 'North Side Emergency Clinic',
-        description: 'Quick care clinic for minor emergencies and urgent care needs.',
         location: '789 Emergency Lane, North Side, City 12347',
         image: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=400&h=400&fit=crop',
-        createdAt: new Date('2024-01-03'),
-        updatedAt: new Date('2024-01-03'),
       },
       {
         id: '4',
-        title: 'Children\'s Specialty Hospital',
-        description: 'Dedicated pediatric hospital with specialized children\'s emergency care.',
         location: '321 Kids Care Boulevard, Family District, City 12348',
         image: 'https://images.unsplash.com/photo-1579952363873-27d3bfad9c0d?w=400&h=400&fit=crop',
-        createdAt: new Date('2024-01-04'),
-        updatedAt: new Date('2024-01-04'),
       },
       {
         id: '5',
-        title: 'Heart & Vascular Institute',
-        description: 'Specialized cardiac care center with state-of-the-art cardiology equipment.',
         location: '654 Cardiac Center Drive, Medical Plaza, City 12349',
         image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=400&fit=crop',
-        createdAt: new Date('2024-01-05'),
-        updatedAt: new Date('2024-01-05'),
       },
     ];
 
